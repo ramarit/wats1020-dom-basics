@@ -9,30 +9,43 @@ var generateFortuneCookie = function() {
     // Grab the paragraph with the ID `fortune-cookie-text` to be able to insert text into that element.
     var fortuneText = document.getElementById('fortune-cookie-text');
 
-    //select random element from array
-    if (previousIndex === false) { //never picked any before
-        pickedIndex = (Math.floor(Math.random()*fortunesList.length)+1);
-    }
-    //checks if pickedIndex is equal to previousIndex
-    else {
-        pickedIndex = Math.floor(Math.random() * (fortunesList.length -1));
-        //if previous index is the same, will choose new index
-        if (pickedIndex >= previousIndex) pickedIndex += 1;
-    }
+    // TODO: Select a new (random) fortune cookie saying from the data stored in the
+    // `fortunesList` variable. (HINT: You will use `Math.floor()` and
+    // `Math.random()` to accomplish this.) Use this data to update the
+    // `innerText` of the `#fortune-cookie-text` element.
+
+    //select random number from 0 - counter
+    //counter decrements each time the generateFurtuneCookie function is called
+    var num = Math.floor(Math.random()*counter);
+    //select that num element from fortunesList array
+    var fortune = fortunesList[num];
     //update the innerText of the '#forture-cookie-text' element
-    var randomText = fortunesList[pickedIndex];
-    fortuneText.innerHTML = randomText;
-    //set previous index to current index
-    previousIndex = pickedIndex;
+    fortuneText.innerHTML = fortune;
+    //splice that item out of array
+    var oldFurtune = fortunesList.splice(num, 1);
+    //push that item to the back of the array
+    fortunesList.push(oldFurtune);
+    //decrement counter
+    counter -= 1;
+    //if counter is === 0, reset counter == length of fortunesList array
+    if (counter === 0) {
+        counter = fortunesList.length;
+    } 
 
 
-    //Create a new `li` element 
+
+    // TODO: Update the Previous Fortunes list with the current `innerHTML`
+    // value of `#fortune-cookie-text`. Follow these steps:
+    // 1. Create a new `li` element with the `document.createElement()` method.
     var list = document.createElement('li');
-    //Set the `innerHTML` of that element equal to the `innerHTML` of
+    // 2. Set the `innerHTML` of that element equal to the `innerHTML` of
+    //    the `#fortune-cookie-text` element.
     list.innerHTML = fortuneText.innerHTML;
-    //append the new `li` element
+    // 3. Select the `#previous-fortunes-container` container and use
+    //    `appendChild()` to append the new `li` element you created above.
     document.getElementById('previous-fortunes-container').appendChild(list);
-}
+};
+
 
 // The following data list is provided for you to use in your code.
 var fortunesList = [
@@ -88,3 +101,5 @@ var fortunesList = [
     "Joys are often the shadows, cast by sorrows.",
     "Fortune favors the brave."
 ]
+//counter == length of fortunesList array
+var counter = fortunesList.length;
